@@ -10,4 +10,5 @@ if (argv.v || argv.version) {
     console.log(pkg.name + '@' + pkg.version);
 } else if (argv.h || argv.help) {
     console.log(USAGE + '\n');
+    console.log('tool xử lý ghép các file.html con thành một file to'+ '\n');
 }
