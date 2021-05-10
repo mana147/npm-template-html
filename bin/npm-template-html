@@ -15,6 +15,4 @@ if (argv.v || argv.version) {
     console.log('-h|--help        hiển thị help');
     console.log('-v|--version     hiển thị version number');
     console.log('-t|--version     hiển thị tag');
-    console.log('-t|--version     hiển thị tag');
-    
 }
