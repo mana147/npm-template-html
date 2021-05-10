@@ -9,6 +9,10 @@ var USAGE = 'Usage: ' + pkg.name ;
 if (argv.v || argv.version) {
     console.log(pkg.name + '@' + pkg.version);
 } else if (argv.h || argv.help) {
-    console.log(USAGE + '\n');
-    console.log('tool xử lý ghép các file.html con thành một file to'+ '\n');
+    console.log(USAGE);
+    console.log('note: tool xử lý ghép các file.html con thành một file to' + '\n');
+    
+    console.log('-h|--help        display this help message');
+    console.log('-v|--version     display the version number');
+
 }
