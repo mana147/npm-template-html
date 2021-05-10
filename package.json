@@ -1,19 +1,30 @@
 {
   "name": "npm-template-html",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "tool xử lý cắt và ghép chia nhỏ file html thành các file con theo cấu trúc template",
   "main": "index.js",
+  "bin": {
+    "npm-template-html": "./bin/npm-template-html"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mana147/npm-template-html.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "GNU",
   "bugs": {
     "url": "https://github.com/mana147/npm-template-html/issues"
   },
-  "homepage": "https://github.com/mana147/npm-template-html#readme"
+  "homepage": "https://github.com/mana147/npm-template-html#readme",
+  "dependencies": {
+    "minimist": "~1.2.0",
+    "mkdirp": "^0.5.1",
+    "ul": "~5.2.2"
+  },
+  "devDependencies": {
+    "tape": "^4.5.1"
+  }
 }

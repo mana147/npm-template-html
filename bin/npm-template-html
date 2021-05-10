@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+
+var cli = require('../cli');
+var pkg = require('../package');
+var argv = require('minimist')(process.argv.slice(2));
+
+
+var USAGE = 'Usage: ' + pkg.name ;
+
+
+if (argv.v || argv.version) {
+    console.log(pkg.name + '@' + pkg.version);
+}
