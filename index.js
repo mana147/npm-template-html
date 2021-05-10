@@ -4,4 +4,3 @@ function consoleHello (option) {
 };
 
 module.exports.consoleHello = consoleHello;
-
