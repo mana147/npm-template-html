@@ -4,15 +4,15 @@ var cli = require('../cli');
 var pkg = require('../package');
 var argv = require('minimist')(process.argv.slice(2));
 
-var USAGE = 'Usage: ' + pkg.name ;
+var USAGE = 'Usage: ' + pkg.name;
 
 if (argv.v || argv.version) {
     console.log(pkg.name + '@' + pkg.version);
 } else if (argv.h || argv.help) {
     console.log(USAGE);
     console.log('note: tool xử lý ghép các file.html con thành một file to' + '\n');
-    
-    console.log('-h|--help        display this help message');
-    console.log('-v|--version     display the version number');
 
+    console.log('-h|--help        hiển thị help');
+    console.log('-v|--version     hiển thị version number');
+    console.log('-t|--version     hiển thị tag');
 }
