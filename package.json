@@ -1,6 +1,6 @@
 {
   "name": "npm-template-html",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "tool xử lý cắt và ghép chia nhỏ file html thành các file con theo cấu trúc template",
   "main": "index.js",
   "bin": {
