@@ -9,7 +9,7 @@ var fs = require('fs');
 var mkdirp = require('mkdirp');
 var path = require('path');
 
-var USAGE = 'Usage: ' + pkg.name + ' Cú pháp sử dụng : npm-template-html name_file_template.html';
+var USAGE = 'Usage: ' + pkg.name ;
 
 if (argv.v || argv.version) {
 
