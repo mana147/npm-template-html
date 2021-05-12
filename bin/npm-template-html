@@ -1,18 +1,121 @@
 #!/usr/bin/env node
 
-var cli = require('../cli');
+// var cli = require('../cli');
 var pkg = require('../package');
 var argv = require('minimist')(process.argv.slice(2));
 
-var USAGE = 'Usage: ' + pkg.name;
+var Templator = require('../index');
+var fs = require('fs');
+var mkdirp = require('mkdirp');
+var path = require('path');
+
+var USAGE = 'Usage: ' + pkg.name + ' Cú pháp sử dụng : npm-template-html name_file_template.html';
 
 if (argv.v || argv.version) {
-    console.log(pkg.name + '@' + pkg.version);
-} else if (argv.h || argv.help) {
-    console.log(USAGE);
-    console.log('note: tool xử lý ghép các file.html con thành một file to' + '\n');
 
-    console.log('-h|--help        hiển thị help');
-    console.log('-v|--version     hiển thị version number');
-    console.log('-t|--version     hiển thị tag');
-}
+    console.log(pkg.name + '@' + pkg.version);
+
+} else if (argv.h || argv.help) {
+
+    console.log(USAGE);
+
+    console.log(`
+        Tool tạo file .html tĩnh từ file template và các file content .
+        
+        Installation : npm install -g npm-template-html 
+        
+        Syntax : npm-template-html name_file_template.html
+
+        -h|--help        hiển thị help
+        -v|--version     hiển thị version number
+    `);
+
+} else if (argv._.length && argv._[0].includes('.html')) {
+
+    let options = {
+        fileTemplateHtml: argv._[0],
+        folderBuild: './build',
+        folderTemplate: 'template',
+        buildTag: 'build-tag',
+    };
+
+    // try {
+
+    if (fs.existsSync(options.fileTemplateHtml)) {
+        // console.log(options);
+
+        let indexHtml = new Templator(options.fileTemplateHtml);
+        // console.log(indexHtml);
+
+        if (indexHtml.processCheckBuildTag() == true) {
+            // lấy tất cả các build tag bên trong  file index.html
+            indexHtml.processGetBuildTag();
+            // lấy tên của keyname sau từ khóa build và lưu vào mảng 
+            indexHtml.processGetNameBuildTag();
+            // lấy cấu trúc thư mục của thư mục template và lưu vào biến .PathFileHtml 
+            indexHtml.processDirTree(options.folderTemplate);
+        }
+
+        let numbCheck = 0;
+
+        while (1) {
+
+            // lấy tên build tag đầu tiên trong mảng 
+            let keyName = indexHtml.NameBuildTags[0];
+            // lấy path đến file theo keyname đã có bên trên trong mảng các Path file đã chuẩn bị trước
+            const path_ = indexHtml.getPathViaName(keyName, indexHtml.PathFileHtml);
+            // show pathfile
+            // console.log(path_); if (typeof path_ == "undefined") break;
+            // check path file nếu không có thì break khỏi vòng while 1 
+
+            // đọc file , replace các build tag bằng các content đã đọc qua file
+            const value = indexHtml.processFile(path_);
+
+            if (value.length === indexHtml.template.length) {
+                break;
+            } else {
+                // cập nhật lại data trong template
+                indexHtml.template = value;
+            }
+
+            // check xem trong template còn build tag không
+
+            // console.log(indexHtml);
+
+            indexHtml.NameBuildTags.shift();
+
+            // check xem trong file .html còn thẻ build tag nào không , nếu không thì break
+            if (indexHtml.processCheckBuildTag() === true) {
+
+                // console.log(indexHtml.NameBuildTags.length);
+                // check xem mảng NameBuildTags của file .html hiện tại đã hoàn thành hết chưa 
+                // nếu đã hoàn thành hết thì load lại quá trình processGetBuildTag và processGetNameBuildTag
+
+                if (indexHtml.NameBuildTags.length === 0) {
+                    indexHtml.processGetBuildTag();
+                    indexHtml.processGetNameBuildTag();
+                    // console.log(indexHtml.NameBuildTags);
+                }
+
+            } else { break }
+
+            // có error thì giới hạn loop 100 là đủ 
+            numbCheck++; if (numbCheck == 100) break;
+        }
+
+        // console.log(indexHtml);
+
+        mkdirp.sync(options.folderBuild);
+
+        fs.writeFileSync(options.folderBuild + '/' + options.fileTemplateHtml, indexHtml.template);
+
+        console.log(`
+            > build thành công file ${options.fileTemplateHtml}
+            > mở thư mục build để xem kết quả
+        `);
+
+    } else { console.error('> file không đọc được .'); }
+
+    // } catch (err) { console.error('> error'); }
+
+} else { console.log(USAGE) }
